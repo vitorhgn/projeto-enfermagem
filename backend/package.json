@@ -1,0 +1,19 @@
+{
+  "name": "projeto-enfermagem",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./src/server.js"
+  },
+  "dependencies": {
+    "@sequelize/mysql": "^7.0.0-alpha.41",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mysql": "^2.18.1",
+    "nodemon": "^3.1.4",
+    "sequelize": "^6.37.3",
+    "sequelize-cli": "^6.6.2",
+    "yup": "^1.4.0"
+  }
+}
