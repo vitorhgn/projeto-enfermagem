@@ -1,17 +1,19 @@
-import { BrowserRouter } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import AppRoutes from './routes';
-
-
+import { BrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import AppRoutes from "./routes";
+import "./styles/app.css";
+import Navbar from "./components/Navbar";
 
 function App() {
-
   return (
-      <BrowserRouter basename={"/"}>
+    <BrowserRouter basename={"/"}>
+      <div className="main">
+        <Navbar />
         <AppRoutes />
-        <ToastContainer autoClose={3000} />
-      </BrowserRouter>
+      </div>
+      <ToastContainer autoClose={3000} />
+    </BrowserRouter>
   );
 }
 
-export default App
+export default App;

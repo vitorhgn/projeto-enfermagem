@@ -1,0 +1,57 @@
+.navbar {
+  background-color: rgb(209 250 229);
+  font-size: 18px;
+  text-decoration: none !important;
+  display: flex;
+  align-items: center;
+  gap: 45px;
+  flex-direction: column;
+  width: 12vw;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+
+.navbar > div,
+.navbar > span {
+  padding: 15px;
+}
+.navbar > div {
+  font-size: 22px;
+}
+.navbar nav {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  flex: 1;
+}
+
+.navbar nav > li > span {
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.navbar nav li {
+  padding: 8px 0;
+}
+.navbar nav li:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.navbar span:hover {
+  padding: 8px 15px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.navbar > span {
+  padding: 8px 15px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.hover-active {
+  border-radius: 4px;
+  background-color: rgb(110 231 183);
+  color: #fff;
+}
