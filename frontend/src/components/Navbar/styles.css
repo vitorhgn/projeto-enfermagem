@@ -40,16 +40,11 @@
   cursor: pointer;
 }
 
-.navbar span:hover {
-  padding: 8px 15px;
+.navbar > span:hover {
   text-decoration: underline;
   cursor: pointer;
 }
-.navbar > span {
-  padding: 8px 15px;
-  text-decoration: underline;
-  cursor: pointer;
-}
+
 .hover-active {
   border-radius: 4px;
   background-color: rgb(110 231 183);
