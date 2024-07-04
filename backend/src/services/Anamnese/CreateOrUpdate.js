@@ -1,9 +1,9 @@
-import Paciente from "../../models/Anamnese.js";
-import yup from "yup";
+import Anamnese from "../../models/Anamnese.js";
+import * as yup from "yup";
 
 async function CreateOrUpdate(data) {
   try {
-    const pacienteSchema = yup.object().shape({
+    const anamneseSchema = yup.object().shape({
       cpf_pac: yup.string().length(11).required(),
       anm_nome: yup.string().max(100).required(),
       anm_idade: yup.number().integer().max(999).required(),
@@ -94,15 +94,30 @@ async function CreateOrUpdate(data) {
       anm_inter_enfermeiro_coren: yup.string().max(100).required(),
       anm_inter_enfermeiro_data: yup.date().required(),
     });
-    await pacienteSchema.validate(data, { abortEarly: false });
-    const paciente = await Paciente.create(data);
-    res.status(201).json(paciente);
+
+    await anamneseSchema.validate(data, { abortEarly: false });
+
+    const anamneseExists = await Anamnese.findByPk(data.cpf_pac);
+
+    if (anamneseExists) {
+      const anamnese = await Anamnese.update(
+        { ...data, status_anamnese: "P" },
+        {
+          where: { cpf_pac: data.cpf_pac },
+        }
+      );
+      return anamnese;
+    } else {
+      const anamnese = await Anamnese.create({ ...data, status_anamnese: "P" });
+      return anamnese;
+    }
   } catch (error) {
     if (error.name === "ValidationError") {
-      return res.status(400).json({ errors: error.errors });
+      console.log({ errors: error.errors });
+      throw new Error("Validation error");
     }
     console.error(error);
-    res.status(500).json({ error: "Erro ao criar anamnese do paciente" });
+    throw new Error("Erro ao criar anamnese do paciente");
   }
 }
 

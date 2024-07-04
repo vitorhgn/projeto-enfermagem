@@ -1,17 +1,16 @@
-import Paciente from "../../models/Anamnese.js";
+import Anamnese from "../../models/Anamnese.js";
 
 async function ListAnamnese(cpf) {
   try {
     if (cpf) {
-      const anamnese = await Paciente.findByPk(cpf);
-      res.status(200).json(anamnese);
+      const anamnese = await Anamnese.findByPk(cpf);
+      return anamnese;
     } else {
-      const anamnese = await Paciente.findAll();
-      res.status(200).json(anamnese);
+      const anamnese = await Anamnese.findAll();
+      return anamnese;
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Erro ao listar anamnese" });
   }
 }
 

@@ -1,8 +1,8 @@
 import sequelize from "../database/index.js";
 import { DataTypes } from "@sequelize/core";
 
-const Paciente = sequelize.define(
-  "Paciente",
+const Anamnese = sequelize.define(
+  "Anamnese",
   {
     cpf_pac: {
       type: DataTypes.STRING(11),
@@ -361,11 +361,15 @@ const Paciente = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    status_anamnese: {
+      type: DataTypes.STRING(1),
+      allowNull: false,
+    },
   },
   {
-    tableName: "paciente",
+    tableName: "anamnese",
     timestamps: false,
   }
 );
 
-export default Paciente;
+export default Anamnese;
