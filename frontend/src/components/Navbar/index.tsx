@@ -3,51 +3,55 @@ import HomeIcon from "@mui/icons-material/Home";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import ChecklistIcon from "@mui/icons-material/Checklist";
 import ReorderIcon from "@mui/icons-material/Reorder";
-
 import "./styles.css";
 import { useNavigate } from "react-router-dom";
 
-type NavbarProps = {
-  //
-};
-
-const Navbar: React.FC<NavbarProps> = () => {
+const Navbar: React.FC = () => {
   const navigate = useNavigate();
-
-  const [params, setParams] = useState("");
+  const [userType, setUserType] = useState("");
 
   function navegarPara(local: string): void {
-    navigate(`${local}?=${params}`);
+    navigate(`${local}?type=${userType}`);
   }
 
   useEffect(() => {
-    setParams(window.location.search.replace("?=", ""));
-  }, [window.location]);
+    const queryParams = new URLSearchParams(window.location.search);
+    const type = queryParams.get("type");
+
+    if (type) {
+      setUserType(type);
+      localStorage.setItem("userType", type);
+    } else {
+      const storedType = localStorage.getItem("userType");
+      if (storedType) {
+        setUserType(storedType);
+      }
+    }
+  }, [window.location.search]);
 
   useEffect(() => {
     if (
-      params === "supervisor" &&
+      userType === "supervisor" &&
       (window.location.pathname.includes("alcantara") ||
         window.location.pathname.includes("vitor"))
     ) {
       navegarPara("/gustavo");
     }
     if (
-      params === "coordenador" &&
+      userType === "coordenador" &&
       (window.location.pathname.includes("maria") ||
         window.location.pathname.includes("vitor"))
     ) {
       navegarPara("/gustavo");
     }
     if (
-      params === "estagiario" &&
+      userType === "estagiario" &&
       (window.location.pathname.includes("maria") ||
         window.location.pathname.includes("alcantara"))
     ) {
       navegarPara("/gustavo");
     }
-    setParams(window.location.search.replace("?=", ""));
-  }, [params]);
+  }, [userType]);
 
   return (
     <div className="navbar">
@@ -62,7 +66,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             Inicio
           </span>
         </li>
-        {(params === "" || params === "estagiario") && (
+        {(userType === "" || userType === "estagiario") && (
           <li
             onClick={() => navegarPara("/vitor")}
             className={`${window.location.pathname.includes("/vitor") && "hover-active"}`}
@@ -74,7 +78,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           </li>
         )}
 
-        {(params === "" || params === "supervisor") && (
+        {(userType === "" || userType === "supervisor") && (
           <li
             onClick={() => navegarPara("/maria")}
             className={`${window.location.pathname.includes("/maria") && "hover-active"}`}
@@ -85,7 +89,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             </span>
           </li>
         )}
-        {(params === "" || params === "coordenador") && (
+        {(userType === "" || userType === "coordenador") && (
           <li
             onClick={() => navegarPara("/alcantara")}
             className={`${window.location.pathname.includes("/alcantara") && "hover-active"}`}
@@ -97,7 +101,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           </li>
         )}
       </nav>
-      <span>Sair</span>
+      <span onClick={() => localStorage.removeItem("userType")}>Sair</span>
     </div>
   );
 };

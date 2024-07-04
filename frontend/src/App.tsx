@@ -7,9 +7,11 @@ import Navbar from "./components/Navbar";
 function App() {
   return (
     <BrowserRouter basename={"/"}>
-      <div className="main">
+      <div className="container">
         <Navbar />
-        <AppRoutes />
+        <div className="main">
+          <AppRoutes />
+        </div>
       </div>
       <ToastContainer autoClose={3000} />
     </BrowserRouter>
