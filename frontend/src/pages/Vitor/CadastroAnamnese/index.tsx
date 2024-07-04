@@ -13,98 +13,10 @@ import {
   FormControl,
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
+import validationSchema from "../../../validations/anamnese";
 
-const validationSchema = yup.object().shape({
-  cpf_pac: yup.string().length(11).required(),
-  anm_nome: yup.string().max(100).required(),
-  anm_idade: yup.number().integer().max(999).required(),
-  anm_sexo: yup.string().length(1).required(),
-  anm_rg: yup.string().max(9).required(),
-  anm_cpf: yup.string().length(11).required(),
-  anm_leito: yup.number().integer().max(9).required(),
-  anm_prof: yup.string().max(60).required(),
-  anm_escolaridade: yup.string().max(60).required(),
-  anm_estado_civil: yup.string().max(20).required(),
-  anm_diagno_med: yup.string().max(100).required(),
-  anm_motivo: yup.string().max(2000).required(),
-  anm_doenca_cronica: yup.string().max(2000).required(),
-  anm_trata_antes: yup.string().max(2000).required(),
-  anm_fator_risco: yup.number().integer().max(9).required(),
-  anm_med_uso: yup.string().max(2000).required(),
-  anm_ant_familiar: yup.string().max(100).required(),
-  anm_condi_mora: yup.string().length(1).required(),
-  anm_cuida_corpo: yup.string().length(1).required(),
-  anm_habi_banho: yup.string().length(1).required(),
-  anm_ativ_fisi_traba: yup.string().max(100).required(),
-  anm_sono_repo: yup.string().max(100).required(),
-  anm_exec_fisi_prog: yup.string().max(100).required(),
-  anm_rec_lazer: yup.string().max(100).required(),
-  anm_cost_comer_freq: yup.string().max(100).required(),
-  anm_elim_uri: yup.string().max(100).required(),
-  anm_elim_int: yup.string().max(100).required(),
-  anm_ciclo_menst: yup.string().max(100).required(),
-  anm_ativ_sex: yup.string().max(100).required(),
-  anm_hidratacao: yup.string().max(100).required(),
-  anm_cor_muco: yup.string().max(100).required(),
-  anm_temperatura: yup.string().max(100).required(),
-  anm_pressao: yup.string().max(100).required(),
-  anm_pulso: yup.string().max(100).required(),
-  anm_respiracao: yup.string().max(100).required(),
-  anm_glicemia: yup.string().max(100).required(),
-  anm_dor: yup.string().max(100).required(),
-  anm_peso: yup.string().max(100).required(),
-  anm_altura: yup.string().max(100).required(),
-  anm_imc: yup.string().max(100).required(),
-  anm_estado_nutri: yup.string().max(100).required(),
-  anm_nivel_conce: yup.string().max(100).required(),
-  anm_movi: yup.string().max(100).required(),
-  anm_pele: yup.string().max(100).required(),
-  anm_cranio: yup.string().max(100).required(),
-  anm_olhos: yup.string().max(100).required(),
-  anm_ouvido: yup.string().max(100).required(),
-  anm_nariz: yup.string().max(100).required(),
-  anm_boca: yup.string().max(100).required(),
-  anm_pescoco: yup.string().max(100).required(),
-  anm_torax: yup.string().max(100).required(),
-  anm_mamas: yup.string().max(100).required(),
-  anm_auscut_pulmao: yup.string().max(100).required(),
-  anm_oxi: yup.string().max(100).required(),
-  anm_coracao: yup.string().max(100).required(),
-  anm_precordio: yup.string().max(100).required(),
-  anm_abdomen: yup.string().max(100).required(),
-  anm_genitu: yup.string().max(100).required(),
-  anm_membro_sup: yup.string().max(100).required(),
-  anm_membro_inf: yup.string().max(100).required(),
-  anm_med_casa: yup.string().max(200).required(),
-  anm_exame_lab: yup.string().max(2000).required(),
-  anm_outras_queixas: yup.string().max(2000).required(),
-  anm_int_social: yup.number().integer().max(9).required(),
-  anm_reso_prob: yup.number().integer().max(9).required(),
-  anm_apoio_spiri: yup.number().integer().max(9).required(),
-  anm_sup_finan: yup.string().max(100).required(),
-  anm_conhe_prob_saude: yup.string().max(100).required(),
-  anm_cond_autocare: yup.string().max(100).required(),
-  anm_mudanca_humor: yup.string().max(100).required(),
-  anm_dado_area: yup.string().max(2000).required(),
-  anm_inter_imp_entrevista: yup.string().max(2000).required(),
-  anm_inter_int_fisica: yup.string().max(100).required(),
-  anm_inter_comunica: yup.string().max(100).required(),
-  anm_inter_sis_resp: yup.string().max(100).required(),
-  anm_inter_sis_circu: yup.string().max(100).required(),
-  anm_inter_sis_gastro: yup.string().max(100).required(),
-  anm_inter_sis_genito_uri: yup.string().max(100).required(),
-  anm_inter_asp_psico_emocional: yup.string().max(100).required(),
-  anm_inter_int_fisica_medica: yup.string().max(100).required(),
-  anm_inter_comunica_med: yup.string().max(100).required(),
-  anm_inter_sis_resp_med: yup.string().max(100).required(),
-  anm_inter_sis_cardio_med: yup.string().max(100).required(),
-  anm_inter_sis_gastro_med: yup.string().max(2000).required(),
-  anm_inter_sis_imuno_med: yup.string().max(2000).required(),
-  anm_inter_asp_prev_promocao_saude: yup.string().max(2000).required(),
-  anm_inter_enfermeiro: yup.string().max(100).required(),
-  anm_inter_enfermeiro_coren: yup.string().max(100).required(),
-  anm_inter_enfermeiro_data: yup.date().required(),
-});
+import "./styles.css";
+import { toast } from "react-toastify";
 
 type FormValues = yup.InferType<typeof validationSchema>;
 
@@ -139,14 +51,15 @@ const CadastroAnamnese: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      const response = await axios.post(
-        "http://localhost:3000/anamnese/create",
-        data
-      );
-      console.log("Anamnese criada com sucesso:", response.data);
+      await axios.post("http://localhost:3000/anamnese/create", data);
+      if (location.state?.anamnese) {
+        toast.success("Anamnese atualizada com sucesso");
+      } else {
+        toast.success("Anamnese criada com sucesso");
+      }
       navigate("/vitor");
     } catch (error) {
-      console.error("Erro ao criar anamnese:", error);
+      toast.error("Erro ao criar/atualizar anamnese");
     }
   };
 
@@ -210,7 +123,9 @@ const CadastroAnamnese: React.FC = () => {
                   <MenuItem value="M">Masculino</MenuItem>
                   <MenuItem value="F">Feminino</MenuItem>
                 </Select>
-                {errors.anm_sexo && <p>{errors.anm_sexo.message}</p>}
+                {errors.anm_sexo && (
+                  <p className="erros-form">{errors.anm_sexo.message}</p>
+                )}
               </FormControl>
             )}
           />
@@ -301,13 +216,15 @@ const CadastroAnamnese: React.FC = () => {
               <FormControl fullWidth error={!!errors.anm_estado_civil}>
                 <InputLabel>Estado Civil</InputLabel>
                 <Select label="Estado Civil" {...field}>
-                  <MenuItem value="solteiro">Solteiro</MenuItem>
-                  <MenuItem value="casado">Casado</MenuItem>
-                  <MenuItem value="divorciado">Divorciado</MenuItem>
-                  <MenuItem value="viuvo">Viúvo</MenuItem>
+                  <MenuItem value="Solteiro">Solteiro</MenuItem>
+                  <MenuItem value="Casado">Casado</MenuItem>
+                  <MenuItem value="Divorciado">Divorciado</MenuItem>
+                  <MenuItem value="Viuvo">Viúvo</MenuItem>
                 </Select>
                 {errors.anm_estado_civil && (
-                  <p>{errors.anm_estado_civil.message}</p>
+                  <p className="erros-form">
+                    {errors.anm_estado_civil.message}
+                  </p>
                 )}
               </FormControl>
             )}
@@ -454,7 +371,7 @@ const CadastroAnamnese: React.FC = () => {
                   <MenuItem value="3">Cedida</MenuItem>
                 </Select>
                 {errors.anm_condi_mora && (
-                  <p>{errors.anm_condi_mora.message}</p>
+                  <p className="erros-form">{errors.anm_condi_mora.message}</p>
                 )}
               </FormControl>
             )}
@@ -474,7 +391,7 @@ const CadastroAnamnese: React.FC = () => {
                   <MenuItem value="4">Ruim</MenuItem>
                 </Select>
                 {errors.anm_cuida_corpo && (
-                  <p>{errors.anm_cuida_corpo.message}</p>
+                  <p className="erros-form">{errors.anm_cuida_corpo.message}</p>
                 )}
               </FormControl>
             )}
@@ -493,7 +410,7 @@ const CadastroAnamnese: React.FC = () => {
                   <MenuItem value="3">Mensal</MenuItem>
                 </Select>
                 {errors.anm_habi_banho && (
-                  <p>{errors.anm_habi_banho.message}</p>
+                  <p className="erros-form">{errors.anm_habi_banho.message}</p>
                 )}
               </FormControl>
             )}
