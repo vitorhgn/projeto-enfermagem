@@ -16,10 +16,10 @@ export const aprovar = async (req, res) => {
     const anamnese = await Anamnese.update(
       { status_anamnese: "A" },
       {
-        where: { cpf_pac: res.body.cpf_pac },
+        where: { cpf_pac: req.body.cpf_pac },
       }
     );
-    res.status(200).json(anamneses);
+    res.status(200).json(anamnese);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao aprovar do paciente" });
@@ -30,24 +30,13 @@ export const reprovar = async (req, res) => {
     const anamnese = await Anamnese.update(
       { status_anamnese: "R" },
       {
-        where: { cpf_pac: res.body.cpf_pac },
+        where: { cpf_pac: req.body.cpf_pac },
       }
     );
-    res.status(200).json(anamneses);
+    res.status(200).json(anamnese);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao reprovar do paciente" });
-  }
-};
-
-export const find = async (req, res) => {
-  try {
-    const { cpf } = req.body.cpf_pac;
-    const anamneses = await ListAnamnese(cpf);
-    res.status(200).json(anamneses);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Erro ao listar anamnese do paciente" });
   }
 };
 
@@ -62,5 +51,22 @@ export const store = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const remove = async (req, res) => {
+  try {
+    const { cpf_pac } = req.params;
+    const anamnese = await Anamnese.findByPk(cpf_pac);
+
+    if (!anamnese) {
+      return res.status(404).json({ error: "Anamnese não encontrada" });
+    }
+
+    await Anamnese.destroy({ where: { cpf_pac } });
+    return res.status(200).json({ message: "Anamnese deletada com sucesso" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Erro ao deletar anamnese" });
   }
 };

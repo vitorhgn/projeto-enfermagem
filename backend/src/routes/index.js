@@ -6,9 +6,9 @@ const routes = express.Router();
 
 routes.get("/health", Anamnese.health);
 routes.get("/anamnese/list", Anamnese.index);
-routes.get("/anamnese/reprovar", Anamnese.reprovar);
-routes.get("/anamnese/aprovar", Anamnese.aprovar);
-routes.get("/anamnese/list/:id", Anamnese.find);
+routes.post("/anamnese/reprovar", Anamnese.reprovar);
+routes.post("/anamnese/aprovar", Anamnese.aprovar);
 routes.post("/anamnese/create", Anamnese.store);
+routes.delete("/anamnese/:cpf_pac", Anamnese.remove);
 
 export default routes;
