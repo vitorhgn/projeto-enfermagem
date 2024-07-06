@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-import ChecklistIcon from "@mui/icons-material/Checklist";
-import ReorderIcon from "@mui/icons-material/Reorder";
 import "./styles.css";
 import { useNavigate } from "react-router-dom";
 
@@ -31,25 +29,13 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     // if (
-    //   userType === "supervisor" &&
-    //   (window.location.pathname.includes("alcantara") ||
-    //     window.location.pathname.includes("vitor"))
+    //   userType === "supervisor" ||
+    //   userType === "coordenador" ||
+    //   userType === "estagiario"
     // ) {
-    //   navegarPara("/gustavo");
-    // }
-    // if (
-    //   userType === "coordenador" &&
-    //   (window.location.pathname.includes("maria") ||
-    //     window.location.pathname.includes("vitor"))
-    // ) {
-    //   navegarPara("/gustavo");
-    // }
-    // if (
-    //   userType === "estagiario" &&
-    //   (window.location.pathname.includes("maria") ||
-    //     window.location.pathname.includes("alcantara"))
-    // ) {
-    //   navegarPara("/gustavo");
+    //   if (!window.location.pathname.includes("/anamneses")) {
+    //     navegarPara("/anamneses");
+    //   }
     // }
   }, [userType]);
 
@@ -66,40 +52,15 @@ const Navbar: React.FC = () => {
             Inicio
           </span>
         </li>
-        {(userType === "" || userType === "estagiario") && (
-          <li
-            onClick={() => navegarPara("/vitor")}
-            className={`${window.location.pathname.includes("/vitor") && "hover-active"}`}
-          >
-            <span>
-              <AppRegistrationIcon />
-              Anamnese
-            </span>
-          </li>
-        )}
-
-        {(userType === "" || userType === "supervisor") && (
-          <li
-            onClick={() => navegarPara("/maria")}
-            className={`${window.location.pathname.includes("/maria") && "hover-active"}`}
-          >
-            <span>
-              <ChecklistIcon />
-              Supervisionar
-            </span>
-          </li>
-        )}
-        {(userType === "" || userType === "coordenador") && (
-          <li
-            onClick={() => navegarPara("/alcantara")}
-            className={`${window.location.pathname.includes("/alcantara") && "hover-active"}`}
-          >
-            <span>
-              <ReorderIcon />
-              Relatório
-            </span>
-          </li>
-        )}
+        <li
+          onClick={() => navegarPara("/anamneses")}
+          className={`${window.location.pathname.includes("/anamneses") && "hover-active"}`}
+        >
+          <span>
+            <AppRegistrationIcon />
+            Anamnese
+          </span>
+        </li>
       </nav>
       <span onClick={() => localStorage.removeItem("userType")}>Sair</span>
     </div>

@@ -37,11 +37,6 @@ const CadastroAnamnese: React.FC = () => {
   const userType = localStorage.getItem("userType");
 
   useEffect(() => {
-
-    // if (userType !== "estagiario") {
-    //   navigate("/gustavo");
-    // }
-
     if (anamnese) {
       Object.keys(anamnese).forEach((key) => {
         setValue(key as keyof FormValues, anamnese[key]);
@@ -57,25 +52,30 @@ const CadastroAnamnese: React.FC = () => {
       } else {
         toast.success("Anamnese criada com sucesso");
       }
-      navigate("/vitor");
+      navigate("/anamneses");
     } catch (error) {
       toast.error("Erro ao criar/atualizar anamnese");
     }
   };
-  const onClickReprovar: any = async (cpf: number | string) => {
+  const onClickReprovar = async () => {
     try {
-      await axios.post("http://localhost:3000/anamnese/reprovar", cpf);
+      await axios.post("http://localhost:3000/anamnese/reprovar", {
+        cpf_pac: anamnese.cpf_pac,
+      });
       toast.success("Anamnese foi reprovada!");
-      navigate("/vitor");
+      navigate("/anamneses");
     } catch (error) {
       toast.error("Erro ao reprovar anamnese");
     }
   };
-  const onClickAprovar: any = async (cpf: number | string) => {
+
+  const onClickAprovar = async () => {
     try {
-      await axios.post("http://localhost:3000/anamnese/aprovar", cpf);
+      await axios.post("http://localhost:3000/anamnese/aprovar", {
+        cpf_pac: anamnese.cpf_pac,
+      });
       toast.success("Anamnese foi aprovada!");
-      navigate("/vitor");
+      navigate("/anamneses");
     } catch (error) {
       toast.error("Erro ao aprovar anamnese");
     }
@@ -91,7 +91,11 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" ||
+                  userType === "coordenador" ||
+                  location.state?.anamnese
+                }
                 label="CPF Paciente"
                 {...field}
                 error={!!errors.cpf_pac}
@@ -107,7 +111,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Nome"
                 {...field}
                 error={!!errors.anm_nome}
@@ -123,7 +129,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Idade"
                 type="number"
                 {...field}
@@ -138,8 +146,13 @@ const CadastroAnamnese: React.FC = () => {
             name="anm_sexo"
             control={control}
             render={({ field }) => (
-              <FormControl fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'} error={!!errors.anm_sexo}>
+              <FormControl
+                fullWidth
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
+                error={!!errors.anm_sexo}
+              >
                 <InputLabel>Sexo</InputLabel>
                 <Select label="Sexo" {...field}>
                   <MenuItem value="M">Masculino</MenuItem>
@@ -159,7 +172,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="RG"
                 {...field}
                 error={!!errors.anm_rg}
@@ -175,7 +190,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="CPF"
                 {...field}
                 error={!!errors.anm_cpf}
@@ -191,7 +208,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Leito"
                 type="number"
                 {...field}
@@ -208,7 +227,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Profissão"
                 {...field}
                 error={!!errors.anm_prof}
@@ -224,7 +245,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Escolaridade"
                 {...field}
                 error={!!errors.anm_escolaridade}
@@ -240,8 +263,13 @@ const CadastroAnamnese: React.FC = () => {
             name="anm_estado_civil"
             control={control}
             render={({ field }) => (
-              <FormControl fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'} error={!!errors.anm_estado_civil}>
+              <FormControl
+                fullWidth
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
+                error={!!errors.anm_estado_civil}
+              >
                 <InputLabel>Estado Civil</InputLabel>
                 <Select label="Estado Civil" {...field}>
                   <MenuItem value="Solteiro">Solteiro</MenuItem>
@@ -265,7 +293,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Diagnóstico Médico"
                 {...field}
                 error={!!errors.anm_diagno_med}
@@ -283,7 +313,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Motivo"
                 multiline
                 rows={4}
@@ -301,7 +333,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Doença Crônica"
                 multiline
                 rows={4}
@@ -323,7 +357,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Tratamento Anterior"
                 multiline
                 rows={4}
@@ -343,7 +379,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Fator de Risco"
                 type="number"
                 {...field}
@@ -362,7 +400,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Medicamentos em Uso"
                 multiline
                 rows={4}
@@ -382,7 +422,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Antecedentes Familiares"
                 {...field}
                 error={!!errors.anm_ant_familiar}
@@ -398,8 +440,13 @@ const CadastroAnamnese: React.FC = () => {
             name="anm_condi_mora"
             control={control}
             render={({ field }) => (
-              <FormControl fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'} error={!!errors.anm_condi_mora}>
+              <FormControl
+                fullWidth
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
+                error={!!errors.anm_condi_mora}
+              >
                 <InputLabel>Condição de Moradia</InputLabel>
                 <Select label="Condição de Moradia" {...field}>
                   <MenuItem value="1">Própria</MenuItem>
@@ -418,8 +465,13 @@ const CadastroAnamnese: React.FC = () => {
             name="anm_cuida_corpo"
             control={control}
             render={({ field }) => (
-              <FormControl fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'} error={!!errors.anm_cuida_corpo}>
+              <FormControl
+                fullWidth
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
+                error={!!errors.anm_cuida_corpo}
+              >
                 <InputLabel>Cuidados com o Corpo</InputLabel>
                 <Select label="Cuidados com o Corpo" {...field}>
                   <MenuItem value="1">Excelente</MenuItem>
@@ -439,8 +491,13 @@ const CadastroAnamnese: React.FC = () => {
             name="anm_habi_banho"
             control={control}
             render={({ field }) => (
-              <FormControl fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'} error={!!errors.anm_habi_banho}>
+              <FormControl
+                fullWidth
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
+                error={!!errors.anm_habi_banho}
+              >
                 <InputLabel>Hábitos de Banho</InputLabel>
                 <Select label="Hábitos de Banho" {...field}>
                   <MenuItem value="1">Diário</MenuItem>
@@ -461,7 +518,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Atividade Física e Trabalho"
                 {...field}
                 error={!!errors.anm_ativ_fisi_traba}
@@ -481,7 +540,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Sono e Repouso"
                 {...field}
                 error={!!errors.anm_sono_repo}
@@ -499,7 +560,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Exercício Físico Programado"
                 {...field}
                 error={!!errors.anm_exec_fisi_prog}
@@ -519,7 +582,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Recreação e Lazer"
                 {...field}
                 error={!!errors.anm_rec_lazer}
@@ -537,7 +602,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Costume Alimentar e Frequência"
                 {...field}
                 error={!!errors.anm_cost_comer_freq}
@@ -557,7 +624,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Eliminação Urinária"
                 {...field}
                 error={!!errors.anm_elim_uri}
@@ -575,7 +644,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Eliminação Intestinal"
                 {...field}
                 error={!!errors.anm_elim_int}
@@ -593,7 +664,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Ciclo Menstrual"
                 {...field}
                 error={!!errors.anm_ciclo_menst}
@@ -611,7 +684,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Atividade Sexual"
                 {...field}
                 error={!!errors.anm_ativ_sex}
@@ -629,7 +704,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Hidratação"
                 {...field}
                 error={!!errors.anm_hidratacao}
@@ -647,7 +724,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Cor do Muco"
                 {...field}
                 error={!!errors.anm_cor_muco}
@@ -665,7 +744,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Temperatura"
                 {...field}
                 error={!!errors.anm_temperatura}
@@ -683,7 +764,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Pressão"
                 {...field}
                 error={!!errors.anm_pressao}
@@ -701,7 +784,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Pulso"
                 {...field}
                 error={!!errors.anm_pulso}
@@ -717,7 +802,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Respiração"
                 {...field}
                 error={!!errors.anm_respiracao}
@@ -735,7 +822,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Glicemia"
                 {...field}
                 error={!!errors.anm_glicemia}
@@ -753,7 +842,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Dor"
                 {...field}
                 error={!!errors.anm_dor}
@@ -769,7 +860,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Peso"
                 {...field}
                 error={!!errors.anm_peso}
@@ -785,7 +878,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Altura"
                 {...field}
                 error={!!errors.anm_altura}
@@ -801,7 +896,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="IMC"
                 {...field}
                 error={!!errors.anm_imc}
@@ -817,7 +914,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Estado Nutricional"
                 {...field}
                 error={!!errors.anm_estado_nutri}
@@ -835,7 +934,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Nível de Consciência"
                 {...field}
                 error={!!errors.anm_nivel_conce}
@@ -853,7 +954,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Movimentação"
                 {...field}
                 error={!!errors.anm_movi}
@@ -869,7 +972,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Pele"
                 {...field}
                 error={!!errors.anm_pele}
@@ -885,7 +990,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Crânio"
                 {...field}
                 error={!!errors.anm_cranio}
@@ -901,7 +1008,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Olhos"
                 {...field}
                 error={!!errors.anm_olhos}
@@ -917,7 +1026,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Ouvido"
                 {...field}
                 error={!!errors.anm_ouvido}
@@ -933,7 +1044,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Nariz"
                 {...field}
                 error={!!errors.anm_nariz}
@@ -949,7 +1062,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Boca"
                 {...field}
                 error={!!errors.anm_boca}
@@ -965,7 +1080,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Pescoço"
                 {...field}
                 error={!!errors.anm_pescoco}
@@ -983,7 +1100,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Tórax"
                 {...field}
                 error={!!errors.anm_torax}
@@ -999,7 +1118,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Mamas"
                 {...field}
                 error={!!errors.anm_mamas}
@@ -1015,7 +1136,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Ausculta Pulmonar"
                 {...field}
                 error={!!errors.anm_auscut_pulmao}
@@ -1035,7 +1158,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Oxigenação"
                 {...field}
                 error={!!errors.anm_oxi}
@@ -1051,7 +1176,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Coração"
                 {...field}
                 error={!!errors.anm_coracao}
@@ -1069,7 +1196,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Pré-Córdio"
                 {...field}
                 error={!!errors.anm_precordio}
@@ -1087,7 +1216,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Abdômen"
                 {...field}
                 error={!!errors.anm_abdomen}
@@ -1105,7 +1236,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Genitália"
                 {...field}
                 error={!!errors.anm_genitu}
@@ -1121,7 +1254,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Membros Superiores"
                 {...field}
                 error={!!errors.anm_membro_sup}
@@ -1139,7 +1274,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Membros Inferiores"
                 {...field}
                 error={!!errors.anm_membro_inf}
@@ -1157,7 +1294,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Medicamentos em Casa"
                 multiline
                 rows={4}
@@ -1177,7 +1316,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Exames Laboratoriais"
                 multiline
                 rows={4}
@@ -1197,7 +1338,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Outras Queixas"
                 multiline
                 rows={4}
@@ -1219,7 +1362,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Interação Social"
                 type="number"
                 {...field}
@@ -1238,7 +1383,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Resolução de Problemas"
                 type="number"
                 {...field}
@@ -1257,7 +1404,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Apoio Espiritual"
                 type="number"
                 {...field}
@@ -1276,7 +1425,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Suporte Financeiro"
                 {...field}
                 error={!!errors.anm_sup_finan}
@@ -1294,7 +1445,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Conhecimento sobre Problemas de Saúde"
                 {...field}
                 error={!!errors.anm_conhe_prob_saude}
@@ -1314,7 +1467,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Condição de Autocuidado"
                 {...field}
                 error={!!errors.anm_cond_autocare}
@@ -1334,7 +1489,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Mudança de Humor"
                 {...field}
                 error={!!errors.anm_mudanca_humor}
@@ -1354,7 +1511,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Dados da Área"
                 multiline
                 rows={4}
@@ -1374,7 +1533,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Impressão da Entrevista"
                 multiline
                 rows={4}
@@ -1396,7 +1557,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Intervenção Física"
                 {...field}
                 error={!!errors.anm_inter_int_fisica}
@@ -1416,7 +1579,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Comunicação"
                 {...field}
                 error={!!errors.anm_inter_comunica}
@@ -1436,7 +1601,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Sistema Respiratório"
                 {...field}
                 error={!!errors.anm_inter_sis_resp}
@@ -1456,7 +1623,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Sistema Circulatório"
                 {...field}
                 error={!!errors.anm_inter_sis_circu}
@@ -1476,7 +1645,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Sistema Gastrointestinal"
                 {...field}
                 error={!!errors.anm_inter_sis_gastro}
@@ -1496,7 +1667,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Sistema Genitourinário"
                 {...field}
                 error={!!errors.anm_inter_sis_genito_uri}
@@ -1516,7 +1689,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Aspecto Psico-Emocional"
                 {...field}
                 error={!!errors.anm_inter_asp_psico_emocional}
@@ -1536,7 +1711,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Intervenção Física Médica"
                 {...field}
                 error={!!errors.anm_inter_int_fisica_medica}
@@ -1556,7 +1733,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Comunicação Médica"
                 {...field}
                 error={!!errors.anm_inter_comunica_med}
@@ -1576,7 +1755,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Sistema Respiratório Médico"
                 {...field}
                 error={!!errors.anm_inter_sis_resp_med}
@@ -1596,7 +1777,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Sistema Cardiovascular Médico"
                 {...field}
                 error={!!errors.anm_inter_sis_cardio_med}
@@ -1616,7 +1799,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Sistema Gastrointestinal Médico"
                 multiline
                 rows={4}
@@ -1638,7 +1823,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Sistema Imunológico Médico"
                 multiline
                 rows={4}
@@ -1660,7 +1847,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Aspecto Preventivo e Promoção da Saúde"
                 multiline
                 rows={4}
@@ -1682,7 +1871,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Enfermeiro"
                 {...field}
                 error={!!errors.anm_inter_enfermeiro}
@@ -1702,7 +1893,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="COREN Enfermeiro"
                 {...field}
                 error={!!errors.anm_inter_enfermeiro_coren}
@@ -1722,7 +1915,9 @@ const CadastroAnamnese: React.FC = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                disabled={userType === 'supervisor' || userType === 'coordenador'}
+                disabled={
+                  userType === "supervisor" || userType === "coordenador"
+                }
                 label="Data do Enfermeiro"
                 type="date"
                 InputLabelProps={{ shrink: true }}
@@ -1743,17 +1938,25 @@ const CadastroAnamnese: React.FC = () => {
           />
         </Grid>
         <Grid item xs={12}>
-          {userType === 'estagiario' && (
+          {userType === "estagiario" && (
             <Button type="submit" variant="contained" color="primary">
               Salvar
             </Button>
           )}
-          {userType === 'supervisor' && (
+          {userType === "supervisor" && (
             <div className="mariazinha">
-              <Button onClick={()=>onClickReprovar(anamnese.cpf_pac)} variant="contained" color="primary">
+              <Button
+                onClick={() => onClickReprovar()}
+                variant="contained"
+                color="primary"
+              >
                 Reprovar
               </Button>
-              <Button onClick={()=>onClickAprovar(anamnese.cpf_pac)} variant="contained" color="primary">
+              <Button
+                onClick={() => onClickAprovar()}
+                variant="contained"
+                color="primary"
+              >
                 Aprovar
               </Button>
             </div>
