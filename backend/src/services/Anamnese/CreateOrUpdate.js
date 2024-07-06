@@ -104,6 +104,7 @@ async function CreateOrUpdate(data) {
         { ...data, status_anamnese: "P" },
         {
           where: { cpf_pac: data.cpf_pac },
+          individualHooks: true,
         }
       );
       return anamnese;

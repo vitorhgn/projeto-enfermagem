@@ -11,32 +11,36 @@ export const index = async (req, res) => {
     res.status(500).json({ error: "Erro ao listar anamnese do paciente" });
   }
 };
+
 export const aprovar = async (req, res) => {
   try {
     const anamnese = await Anamnese.update(
       { status_anamnese: "A" },
       {
         where: { cpf_pac: req.body.cpf_pac },
+        individualHooks: true,
       }
     );
     res.status(200).json(anamnese);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Erro ao aprovar do paciente" });
+    res.status(500).json({ error: "Erro ao aprovar anamnese do paciente" });
   }
 };
+
 export const reprovar = async (req, res) => {
   try {
     const anamnese = await Anamnese.update(
       { status_anamnese: "R" },
       {
         where: { cpf_pac: req.body.cpf_pac },
+        individualHooks: true,
       }
     );
     res.status(200).json(anamnese);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Erro ao reprovar do paciente" });
+    res.status(500).json({ error: "Erro ao reprovar anamnese do paciente" });
   }
 };
 

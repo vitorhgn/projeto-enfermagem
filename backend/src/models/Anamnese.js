@@ -368,7 +368,7 @@ const Anamnese = sequelize.define(
   },
   {
     tableName: "anamnese",
-    timestamps: false,
+    timestamps: true,
   }
 );
 
