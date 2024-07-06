@@ -30,27 +30,27 @@ const Navbar: React.FC = () => {
   }, [window.location.search]);
 
   useEffect(() => {
-    if (
-      userType === "supervisor" &&
-      (window.location.pathname.includes("alcantara") ||
-        window.location.pathname.includes("vitor"))
-    ) {
-      navegarPara("/gustavo");
-    }
-    if (
-      userType === "coordenador" &&
-      (window.location.pathname.includes("maria") ||
-        window.location.pathname.includes("vitor"))
-    ) {
-      navegarPara("/gustavo");
-    }
-    if (
-      userType === "estagiario" &&
-      (window.location.pathname.includes("maria") ||
-        window.location.pathname.includes("alcantara"))
-    ) {
-      navegarPara("/gustavo");
-    }
+    // if (
+    //   userType === "supervisor" &&
+    //   (window.location.pathname.includes("alcantara") ||
+    //     window.location.pathname.includes("vitor"))
+    // ) {
+    //   navegarPara("/gustavo");
+    // }
+    // if (
+    //   userType === "coordenador" &&
+    //   (window.location.pathname.includes("maria") ||
+    //     window.location.pathname.includes("vitor"))
+    // ) {
+    //   navegarPara("/gustavo");
+    // }
+    // if (
+    //   userType === "estagiario" &&
+    //   (window.location.pathname.includes("maria") ||
+    //     window.location.pathname.includes("alcantara"))
+    // ) {
+    //   navegarPara("/gustavo");
+    // }
   }, [userType]);
 
   return (

@@ -11,3 +11,7 @@
   margin-bottom: 0;
   margin-left: 14px;
 }
+.mariazinha{
+  display: flex;
+  justify-content: space-between;
+}
