@@ -44,8 +44,8 @@ const Navbar: React.FC = () => {
       <div>Enfermagem</div>
       <nav>
         <li
-          onClick={() => navegarPara("/gustavo")}
-          className={`${window.location.pathname.includes("/gustavo") && "hover-active"}`}
+          onClick={() => navegarPara("/home")}
+          className={`${window.location.pathname.includes("/home") && "hover-active"}`}
         >
           <span>
             <HomeIcon />
