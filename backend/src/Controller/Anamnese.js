@@ -1,4 +1,5 @@
 import Anamnese from "../models/Anamnese.js";
+import Armazenar from "../models/Armazenar.js";
 import CreateOrUpdate from "../services/Anamnese/CreateOrUpdate.js";
 import ListAnamnese from "../services/Anamnese/ListAnamnese.js";
 
@@ -14,14 +15,26 @@ export const index = async (req, res) => {
 
 export const aprovar = async (req, res) => {
   try {
-    const anamnese = await Anamnese.update(
+    await Anamnese.update(
       { status_anamnese: "A" },
       {
         where: { cpf_pac: req.body.cpf_pac },
         individualHooks: true,
       }
     );
-    res.status(200).json(anamnese);
+
+    const anamnese = await Anamnese.findByPk(req.body.cpf_pac);
+
+    if (!anamnese) {
+      return res.status(404).json({ error: "Anamnese não encontrada" });
+    }
+
+    await Armazenar.create(anamnese.toJSON());
+    await Anamnese.destroy({ where: { cpf_pac: req.body.cpf_pac } });
+
+    res.status(200).json({
+      message: "Anamnese aprovada e movida para Armazenar com sucesso",
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao aprovar anamnese do paciente" });
@@ -30,14 +43,16 @@ export const aprovar = async (req, res) => {
 
 export const reprovar = async (req, res) => {
   try {
-    const anamnese = await Anamnese.update(
+    await Anamnese.update(
       { status_anamnese: "R" },
       {
         where: { cpf_pac: req.body.cpf_pac },
         individualHooks: true,
       }
     );
-    res.status(200).json(anamnese);
+    res.status(200).json({
+      message: "Anamnese foi reprovada",
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao reprovar anamnese do paciente" });
@@ -72,5 +87,15 @@ export const remove = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Erro ao deletar anamnese" });
+  }
+};
+
+export const indexArmazenar = async (req, res) => {
+  try {
+    const armazenar = await Armazenar.findAll();
+    res.status(200).json(armazenar);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao listar anamneses armazenadas" });
   }
 };
