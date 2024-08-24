@@ -93,7 +93,7 @@ module.exports = {
         anm_inter_enfermeiro: "Fulana de Tal",
         anm_inter_enfermeiro_coren: "123457",
         anm_inter_enfermeiro_data: new Date(),
-        status_anamnese: "A",
+        status_anamnese: "P",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
