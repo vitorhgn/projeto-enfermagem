@@ -363,6 +363,16 @@ module.exports = {
         type: Sequelize.STRING(1),
         allowNull: false,
       },
+      paciente_id: {
+        type: Sequelize.STRING(11),
+        allowNull: false,
+        references: {
+          model: 'pacientes',
+          key: 'cpf_pac',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

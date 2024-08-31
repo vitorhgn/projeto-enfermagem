@@ -1,5 +1,6 @@
 import sequelize from "../database/index.js";
 import { DataTypes } from "@sequelize/core";
+import Paciente from './Pacientes.js';
 
 const Anamnese = sequelize.define(
   "Anamnese",
@@ -365,11 +366,22 @@ const Anamnese = sequelize.define(
       type: DataTypes.STRING(1),
       allowNull: false,
     },
+    paciente_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Paciente,
+        key: 'cpf_pac',
+      },
+    }
   },
   {
     tableName: "anamnese",
     timestamps: true,
   }
 );
+
+Paciente.hasMany(Anamnese, { foreignKey: "paciente_id", as: "anamneses" });
+Anamnese.belongsTo(Paciente, { foreignKey: "paciente_id", as: "paciente" });
 
 export default Anamnese;

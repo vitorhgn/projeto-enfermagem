@@ -29,7 +29,11 @@ export const aprovar = async (req, res) => {
       return res.status(404).json({ error: "Anamnese não encontrada" });
     }
 
-    await Armazenar.create(anamnese.toJSON());
+    // Usa upsert para criar ou atualizar o registro na tabela Armazenar
+    const anamneseData = anamnese.toJSON();
+    await Armazenar.upsert(anamneseData);
+
+    // Remove o registro da tabela Anamnese
     await Anamnese.destroy({ where: { cpf_pac: req.body.cpf_pac } });
 
     res.status(200).json({

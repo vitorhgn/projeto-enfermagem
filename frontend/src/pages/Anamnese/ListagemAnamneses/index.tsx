@@ -28,6 +28,9 @@ type Anamnese = {
   anm_idade: number;
   anm_rg: string;
   status_anamnese: string;
+  nome_pac: string;
+  rg_pac: string;
+  anamneses: any;
 };
 
 const ListagemAnamneses: React.FC = () => {
@@ -48,9 +51,17 @@ const ListagemAnamneses: React.FC = () => {
       const endpoint =
         userType === "coordenador"
           ? "http://localhost:3000/anamnese/armazenar"
-          : "http://localhost:3000/anamnese";
+          : "http://localhost:3000/pacientes/sem-anamnese-ou-pendente-ou-reprovada";
       const response = await axios.get(endpoint);
-      setAnamneses(response.data);
+
+      // Filtrar pacientes para o supervisor
+      const filteredData =
+        userType === "supervisor"
+          ? response.data.filter(
+              (anamnese: any) => anamnese.anamneses.length > 0
+            )
+          : response.data;
+      setAnamneses(filteredData);
     } catch (error) {
       toast.error("Erro ao buscar anamneses");
     } finally {
@@ -58,13 +69,13 @@ const ListagemAnamneses: React.FC = () => {
     }
   };
 
-  const handleCadastrar = () => {
-    const route =
-      userType === "coordenador" || userType === "supervisor"
-        ? "/visualizar-anamnese"
-        : "/cadastrar-anamnese";
-    navigate(route);
-  };
+  // const handleCadastrar = () => {
+  //   const route =
+  //     userType === "coordenador" || userType === "supervisor"
+  //       ? "/visualizar-anamnese"
+  //       : "/cadastrar-anamnese";
+  //   navigate(route);
+  // };
 
   const handleEditar = (anamnese: Anamnese) => {
     const route =
@@ -90,9 +101,7 @@ const ListagemAnamneses: React.FC = () => {
         await axios.delete(
           `http://localhost:3000/anamnese/${selectedAnamnese}`
         );
-        setAnamneses(
-          anamneses.filter((anamnese) => anamnese.cpf_pac !== selectedAnamnese)
-        );
+        fetchAnamneses();
         handleClose();
       } catch (error) {
         toast.error("Erro ao deletar anamnese");
@@ -100,7 +109,31 @@ const ListagemAnamneses: React.FC = () => {
     }
   };
 
-  const getStatusStyle = (status: string) => {
+  const enviarDados = (anamnese: any) => {
+    let anamneseTemp: any = {};
+
+    // Verifica se há algum elemento na lista 'anamneses'
+    if (userType === "coordenador") {
+      anamneseTemp = { ...anamnese };
+    } else {
+      if (anamnese.anamneses.length > 0) {
+        anamneseTemp = { ...anamnese.anamneses[0] };
+      } else {
+        anamneseTemp = {
+          ...anamnese.anamneses[0],
+          anm_nome: anamnese.nome_pac,
+          anm_rg: anamnese.rg_pac,
+          cpf_pac: anamnese.cpf_pac,
+          anm_cpf: anamnese.cpf_pac,
+        };
+      }
+    }
+
+    anamneseTemp.paciente_id = anamnese.cpf_pac;
+    return anamneseTemp;
+  };
+
+  const getStatusStyle = (status: any) => {
     switch (status) {
       case "A":
         return { backgroundColor: "#d4edda", color: "#155724" };
@@ -150,62 +183,99 @@ const ListagemAnamneses: React.FC = () => {
         justifyContent="flex-end"
         style={{ marginBottom: "20px" }}
       >
-        {userType === "estagiario" && (
+        {/* {userType === "estagiario" && (
           <Button variant="contained" color="primary" onClick={handleCadastrar}>
             Cadastrar Anamnese
           </Button>
-        )}
+        )} */}
       </Grid>
       <TableContainer component={Paper} style={{ width: "100%" }}>
         <Table style={{ width: "100%" }}>
           <TableHead>
             <TableRow>
               <TableCell width={2}>CPF Paciente</TableCell>
-              <TableCell width={4}>Nome</TableCell>
-              <TableCell width={2}>Idade</TableCell>
+              <TableCell width={userType === "coordenador" ? 4 : 6}>
+                Nome
+              </TableCell>
+              {userType === "coordenador" && (
+                <TableCell width={2}>Idade</TableCell>
+              )}
               <TableCell width={2}>RG</TableCell>
               <TableCell width={2}>Status</TableCell>
               <TableCell width={4}>Ações</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {anamneses.map((anamnese, index) => (
-              <TableRow key={index}>
-                <TableCell width={2}>{formatCpf(anamnese.cpf_pac)}</TableCell>
-                <TableCell width={4}>{anamnese.anm_nome}</TableCell>
-                <TableCell width={2}>{anamnese.anm_idade}</TableCell>
-                <TableCell width={2}>{anamnese.anm_rg}</TableCell>
-                <TableCell
-                  width={2}
-                  style={getStatusStyle(anamnese.status_anamnese)}
-                >
-                  {getStatusText(anamnese.status_anamnese)}
-                </TableCell>
-                <TableCell width={4}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    style={{ marginRight: 8 }}
-                    onClick={() => handleEditar(anamnese)}
-                    startIcon={userType !== "coordenador" && <EditIcon />}
-                  >
-                    {userType !== "coordenador" ? "Editar" : "Visualizar"}
-                  </Button>
-                  {userType === "estagiario" && (
+            {anamneses.map((anamnese, index) => {
+              return (
+                <TableRow key={index}>
+                  {userType === "coordenador" ? (
+                    <>
+                      <TableCell width={2}>
+                        {formatCpf(anamnese.cpf_pac)}
+                      </TableCell>
+                      <TableCell width={4}>{anamnese.anm_nome}</TableCell>
+                      <TableCell width={2}>{anamnese.anm_idade}</TableCell>
+                      <TableCell width={2}>{anamnese.anm_rg}</TableCell>
+                      <TableCell
+                        width={2}
+                        style={getStatusStyle(anamnese.status_anamnese)}
+                      >
+                        {getStatusText(anamnese.status_anamnese)}
+                      </TableCell>
+                    </>
+                  ) : (
+                    <>
+                      <TableCell width={2}>
+                        {formatCpf(anamnese.cpf_pac)}
+                      </TableCell>
+                      <TableCell width={6}>{anamnese.nome_pac}</TableCell>
+                      {/* <TableCell width={2}>{anamnese.idade}</TableCell> */}
+                      <TableCell width={2}>{anamnese.rg_pac}</TableCell>
+                      <TableCell
+                        width={2}
+                        style={getStatusStyle(
+                          anamnese.anamneses.length > 0
+                            ? anamnese.anamneses[0].status_anamnese
+                            : "P"
+                        )}
+                      >
+                        {getStatusText(
+                          anamnese.anamneses.length > 0
+                            ? anamnese.anamneses[0].status_anamnese
+                            : "P"
+                        )}
+                      </TableCell>
+                    </>
+                  )}
+
+                  <TableCell width={4}>
                     <Button
                       variant="contained"
-                      style={{ backgroundColor: "#f44336", color: "white" }}
+                      color="primary"
                       size="small"
-                      onClick={() => handleClickOpen(anamnese.cpf_pac)}
-                      startIcon={<DeleteIcon />}
+                      style={{ marginRight: 8 }}
+                      onClick={() => handleEditar(enviarDados(anamnese))}
+                      startIcon={userType !== "coordenador" && <EditIcon />}
                     >
-                      Deletar
+                      {userType !== "coordenador" ? "Editar" : "Visualizar"}
                     </Button>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
+                    {userType === "estagiario" &&
+                      anamnese.anamneses.length > 0 && (
+                        <Button
+                          variant="contained"
+                          style={{ backgroundColor: "#f44336", color: "white" }}
+                          size="small"
+                          onClick={() => handleClickOpen(anamnese.cpf_pac)}
+                          startIcon={<DeleteIcon />}
+                        >
+                          Deletar
+                        </Button>
+                      )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
