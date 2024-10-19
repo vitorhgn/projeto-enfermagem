@@ -27,6 +27,7 @@ type Anamnese = {
   anm_nome: string;
   anm_idade: number;
   anm_rg: string;
+  anm_cpf: string;
   status_anamnese: string;
   nome_pac: string;
   rg_pac: string;
@@ -53,6 +54,7 @@ const ListagemAnamneses: React.FC = () => {
           ? "http://localhost:3000/anamnese/armazenar"
           : "http://localhost:3000/pacientes/sem-anamnese-ou-pendente-ou-reprovada";
       const response = await axios.get(endpoint);
+      console.log(response.data);
 
       // Filtrar pacientes para o supervisor
       const filteredData =
@@ -212,7 +214,9 @@ const ListagemAnamneses: React.FC = () => {
                   {userType === "coordenador" ? (
                     <>
                       <TableCell width={2}>
-                        {formatCpf(anamnese.cpf_pac)}
+                        {userType === "coordenador"
+                          ? formatCpf(anamnese.anm_cpf)
+                          : formatCpf(anamnese.cpf_pac)}
                       </TableCell>
                       <TableCell width={4}>{anamnese.anm_nome}</TableCell>
                       <TableCell width={2}>{anamnese.anm_idade}</TableCell>

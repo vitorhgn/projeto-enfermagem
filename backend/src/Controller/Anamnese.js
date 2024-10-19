@@ -18,12 +18,12 @@ export const aprovar = async (req, res) => {
     await Anamnese.update(
       { status_anamnese: "A" },
       {
-        where: { cpf_pac: req.body.cpf_pac },
+        where: { cod_anamnese: req.body.cod_anamnese },
         individualHooks: true,
       }
     );
 
-    const anamnese = await Anamnese.findByPk(req.body.cpf_pac);
+    const anamnese = await Anamnese.findByPk(req.body.cod_anamnese);
 
     if (!anamnese) {
       return res.status(404).json({ error: "Anamnese não encontrada" });
@@ -34,7 +34,7 @@ export const aprovar = async (req, res) => {
     await Armazenar.upsert(anamneseData);
 
     // Remove o registro da tabela Anamnese
-    await Anamnese.destroy({ where: { cpf_pac: req.body.cpf_pac } });
+    await Anamnese.destroy({ where: { cod_anamnese: req.body.cod_anamnese } });
 
     res.status(200).json({
       message: "Anamnese aprovada e movida para Armazenar com sucesso",
@@ -50,7 +50,7 @@ export const reprovar = async (req, res) => {
     await Anamnese.update(
       { status_anamnese: "R" },
       {
-        where: { cpf_pac: req.body.cpf_pac },
+        where: { cod_anamnese: req.body.cod_anamnese },
         individualHooks: true,
       }
     );
@@ -79,14 +79,14 @@ export const store = async (req, res) => {
 
 export const remove = async (req, res) => {
   try {
-    const { cpf_pac } = req.params;
-    const anamnese = await Anamnese.findByPk(cpf_pac);
+    const { cod_anamnese } = req.params;
+    const anamnese = await Anamnese.findByPk(cod_anamnese);
 
     if (!anamnese) {
       return res.status(404).json({ error: "Anamnese não encontrada" });
     }
 
-    await Anamnese.destroy({ where: { cpf_pac } });
+    await Anamnese.destroy({ where: { cod_anamnese } });
     return res.status(200).json({ message: "Anamnese deletada com sucesso" });
   } catch (error) {
     console.error(error);

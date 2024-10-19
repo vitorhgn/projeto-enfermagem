@@ -2,7 +2,6 @@ import sequelize from "../database/index.js";
 import { DataTypes } from "@sequelize/core";
 import Anamnese from "./Anamnese.js";
 
-// Definição do modelo Paciente
 const Paciente = sequelize.define(
   "Paciente",
   {

@@ -1,9 +1,9 @@
 import Anamnese from "../../models/Anamnese.js";
 
-async function ListAnamnese(cpf) {
+async function ListAnamnese(cod_anamnese) {
   try {
-    if (cpf) {
-      const anamnese = await Anamnese.findByPk(cpf);
+    if (cod_anamnese) {
+      const anamnese = await Anamnese.findByPk(cod_anamnese);
       return anamnese;
     } else {
       const anamnese = await Anamnese.findAll();

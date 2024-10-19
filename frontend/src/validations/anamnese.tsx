@@ -1,10 +1,7 @@
 import * as yup from "yup";
 
 const validationSchema = yup.object().shape({
-  cpf_pac: yup
-    .string()
-    .length(11, "O CPF deve ter exatamente 11 caracteres")
-    .required("O campo CPF é obrigatório"),
+  cod_anamnese: yup.string().max(255, "O codigo esta incorreto").optional(),
   anm_nome: yup
     .string()
     .max(100, "O nome deve ter no máximo 100 caracteres")

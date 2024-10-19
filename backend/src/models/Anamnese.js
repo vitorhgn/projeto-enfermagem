@@ -1,12 +1,12 @@
 import sequelize from "../database/index.js";
 import { DataTypes } from "@sequelize/core";
-import Paciente from './Pacientes.js';
+import Paciente from "./Pacientes.js";
 
 const Anamnese = sequelize.define(
   "Anamnese",
   {
-    cpf_pac: {
-      type: DataTypes.STRING(11),
+    cod_anamnese: {
+      type: DataTypes.STRING(255),
       allowNull: false,
       primaryKey: true,
     },
@@ -371,9 +371,9 @@ const Anamnese = sequelize.define(
       allowNull: false,
       references: {
         model: Paciente,
-        key: 'cpf_pac',
+        key: "cpf_pac",
       },
-    }
+    },
   },
   {
     tableName: "anamnese",

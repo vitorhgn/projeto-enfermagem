@@ -5,8 +5,8 @@ import Paciente from "./Pacientes.js";
 const Armazenar = sequelize.define(
   "Armazenar",
   {
-    cpf_pac: {
-      type: DataTypes.STRING(11),
+    cod_anamnese: {
+      type: DataTypes.STRING(255),
       allowNull: false,
       primaryKey: true,
     },

@@ -46,6 +46,8 @@ const CadastroAnamnese: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
+      console.log(data);
+
       await axios.post("http://localhost:3000/anamnese/create", data);
       if (location.state?.anamnese) {
         toast.success("Anamnese atualizada com sucesso");
@@ -60,7 +62,7 @@ const CadastroAnamnese: React.FC = () => {
   const onClickReprovar = async () => {
     try {
       await axios.post("http://localhost:3000/anamnese/reprovar", {
-        cpf_pac: anamnese.cpf_pac,
+        cod_anamnese: anamnese.cod_anamnese,
       });
       toast.success("Anamnese foi reprovada!");
       navigate("/anamneses");
@@ -72,7 +74,7 @@ const CadastroAnamnese: React.FC = () => {
   const onClickAprovar = async () => {
     try {
       await axios.post("http://localhost:3000/anamnese/aprovar", {
-        cpf_pac: anamnese.cpf_pac,
+        cod_anamnese: anamnese.cod_anamnese,
       });
       toast.success("Anamnese foi aprovada!");
       navigate("/anamneses");
@@ -86,7 +88,7 @@ const CadastroAnamnese: React.FC = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <Controller
-            name="cpf_pac"
+            name="cod_anamnese"
             control={control}
             render={({ field }) => (
               <TextField
@@ -96,10 +98,12 @@ const CadastroAnamnese: React.FC = () => {
                   userType === "coordenador" ||
                   location.state?.anamnese
                 }
-                label="CPF Paciente"
+                label="Codigo Anamnese"
                 {...field}
-                error={!!errors.cpf_pac}
-                helperText={errors.cpf_pac ? errors.cpf_pac.message : ""}
+                error={!!errors.cod_anamnese}
+                helperText={
+                  errors.cod_anamnese ? errors.cod_anamnese.message : ""
+                }
               />
             )}
           />

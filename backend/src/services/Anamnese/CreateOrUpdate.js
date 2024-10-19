@@ -4,7 +4,7 @@ import * as yup from "yup";
 async function CreateOrUpdate(data) {
   try {
     const anamneseSchema = yup.object().shape({
-      cpf_pac: yup.string().length(11).required(),
+      cod_anamnese: yup.string().max(255).optional(),
       anm_nome: yup.string().max(100).required(),
       anm_idade: yup.number().integer().max(999).required(),
       anm_sexo: yup.string().length(1).required(),
@@ -95,15 +95,30 @@ async function CreateOrUpdate(data) {
       anm_inter_enfermeiro_data: yup.date().required(),
     });
 
+    if (!data.cod_anamnese) {
+      // Gerar o TIME no formato desejado (usando o timestamp em milissegundos)
+      const time = Date.now().toString(); // Exemplo: "1643190400000"
+
+      // Criar o código do profissional, do paciente e a especialidade
+      const codigoProfissional = "001"; // Exemplo: código do profissional
+      const codigoPaciente = "12345678901"; // Exemplo: CPF ou outro código do paciente
+      const especialidade = "001"; // Exemplo: código da especialidade
+
+      // Montar a sequência para cad_anamnese
+      const cadAnamnese = `${time}-${codigoProfissional}-${codigoPaciente}-${especialidade}`;
+
+      data.cod_anamnese = cadAnamnese;
+    }
+
     await anamneseSchema.validate(data, { abortEarly: false });
 
-    const anamneseExists = await Anamnese.findByPk(data.cpf_pac);
+    const anamneseExists = await Anamnese.findByPk(data.cod_anamnese);
 
     if (anamneseExists) {
       const anamnese = await Anamnese.update(
         { ...data, status_anamnese: "P" },
         {
-          where: { cpf_pac: data.cpf_pac },
+          where: { cod_anamnese: data.cod_anamnese },
           individualHooks: true,
         }
       );

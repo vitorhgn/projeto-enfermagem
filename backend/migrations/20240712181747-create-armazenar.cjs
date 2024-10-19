@@ -2,8 +2,8 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("armazenar", {
-      cpf_pac: {
-        type: Sequelize.STRING(11),
+      cod_anamnese: {
+        type: Sequelize.STRING(255),
         allowNull: false,
         primaryKey: true,
       },
@@ -367,11 +367,11 @@ module.exports = {
         type: Sequelize.STRING(11),
         allowNull: false,
         references: {
-          model: 'pacientes',
-          key: 'cpf_pac',
+          model: "pacientes",
+          key: "cpf_pac",
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       createdAt: {
         allowNull: false,
