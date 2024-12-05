@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import HomeIcon from "@mui/icons-material/Home";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import "./styles.css";
 import { useNavigate } from "react-router-dom";
@@ -43,15 +42,6 @@ const Navbar: React.FC = () => {
     <div className="navbar">
       <div>Enfermagem</div>
       <nav>
-        <li
-          onClick={() => navegarPara("/home")}
-          className={`${window.location.pathname.includes("/home") && "hover-active"}`}
-        >
-          <span>
-            <HomeIcon />
-            Inicio
-          </span>
-        </li>
         <li
           onClick={() => navegarPara("/anamneses")}
           className={`${window.location.pathname.includes("/anamneses") && "hover-active"}`}
