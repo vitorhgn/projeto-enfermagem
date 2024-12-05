@@ -143,7 +143,7 @@ const ListagemAnamneses: React.FC = () => {
         return { backgroundColor: "#f8d7da", color: "#721c24" };
       case "P":
       default:
-        return { backgroundColor: "#fff3cd", color: "#856404" };
+        return { backgroundColor: "#c4f9ff", color: "#856404" };
     }
   };
 
