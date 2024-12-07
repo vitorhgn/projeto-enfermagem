@@ -60,7 +60,7 @@ const ListagemAnamneses: React.FC = () => {
       const filteredData =
         userType === "supervisor"
           ? response.data.filter(
-              (anamnese: any) => anamnese.anamneses.length > 0
+              (anamnese: any) => (anamnese.anamneses ?? []).length > 0
             )
           : response.data;
       setAnamneses(filteredData);
@@ -118,7 +118,7 @@ const ListagemAnamneses: React.FC = () => {
     if (userType === "coordenador") {
       anamneseTemp = { ...anamnese };
     } else {
-      if (anamnese.anamneses.length > 0) {
+      if ((anamnese.anamneses ?? []).length > 0) {
         anamneseTemp = { ...anamnese.anamneses[0] };
       } else {
         anamneseTemp = {
@@ -240,13 +240,13 @@ const ListagemAnamneses: React.FC = () => {
                       <TableCell
                         width={2}
                         style={getStatusStyle(
-                          anamnese.anamneses.length > 0
+                          (anamnese.anamneses ?? []).length > 0
                             ? anamnese.anamneses[0].status_anamnese
                             : "P"
                         )}
                       >
                         {getStatusText(
-                          anamnese.anamneses.length > 0
+                          (anamnese.anamneses ?? []).length > 0
                             ? anamnese.anamneses[0].status_anamnese
                             : "P"
                         )}
@@ -266,7 +266,7 @@ const ListagemAnamneses: React.FC = () => {
                       {userType !== "coordenador" ? "Editar" : "Visualizar"}
                     </Button>
                     {userType === "estagiario" &&
-                      anamnese.anamneses.length > 0 && (
+                      (anamnese.anamneses ?? []).length > 0 && (
                         <Button
                           variant="contained"
                           style={{ backgroundColor: "#f44336", color: "white" }}
