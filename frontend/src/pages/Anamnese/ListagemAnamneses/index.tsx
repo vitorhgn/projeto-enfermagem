@@ -87,8 +87,8 @@ const ListagemAnamneses: React.FC = () => {
     navigate(route, { state: { anamnese } });
   };
 
-  const handleClickOpen = (cpf_pac: string) => {
-    setSelectedAnamnese(cpf_pac);
+  const handleClickOpen = (cod_anamnese: string) => {
+    setSelectedAnamnese(cod_anamnese);
     setOpen(true);
   };
 
@@ -160,6 +160,7 @@ const ListagemAnamneses: React.FC = () => {
   };
 
   const formatCpf = (cpf: string) => {
+    if (!cpf) return "";
     return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
   };
 
@@ -270,7 +271,9 @@ const ListagemAnamneses: React.FC = () => {
                           variant="contained"
                           style={{ backgroundColor: "#f44336", color: "white" }}
                           size="small"
-                          onClick={() => handleClickOpen(anamnese.cpf_pac)}
+                          onClick={() =>
+                            handleClickOpen(anamnese.anamneses[0].cod_anamnese)
+                          }
                           startIcon={<DeleteIcon />}
                         >
                           Deletar

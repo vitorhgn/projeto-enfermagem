@@ -11,7 +11,7 @@ routes.get("/anamnese/armazenar", Anamnese.indexArmazenar);
 routes.post("/anamnese/reprovar", Anamnese.reprovar);
 routes.post("/anamnese/aprovar", Anamnese.aprovar);
 routes.post("/anamnese/create", Anamnese.store);
-routes.delete("/anamnese/:cpf_pac", Anamnese.remove);
+routes.delete("/anamnese/:cod_anamnese", Anamnese.remove);
 routes.get(
   "/pacientes/sem-anamnese-ou-pendente-ou-reprovada",
   Pacientes.listarPacientesSemAnamneseOuPendenteOuReprovada

@@ -1970,14 +1970,14 @@ const CadastroAnamnese: React.FC = () => {
             </div>
           )}
           {userType === "coordenador" && (
-    <Button 
-      onClick={() => window.print()} // Gera a função de impressão no navegador
-      variant="contained"
-      style={{ backgroundColor: "#d1ecf1", color: "#0c5460" }} // Azul Suave
-    >
-      Exportar PDF
-    </Button>
-  )}
+            <Button
+              onClick={() => window.print()} // Gera a função de impressão no navegador
+              variant="contained"
+              style={{ backgroundColor: "#d1ecf1", color: "#0c5460" }} // Azul Suave
+            >
+              Exportar PDF
+            </Button>
+          )}
         </Grid>
       </Grid>
     </form>
